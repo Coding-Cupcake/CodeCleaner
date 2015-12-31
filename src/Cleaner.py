@@ -1,18 +1,21 @@
 
 import os
-from Utils import createTempFile, YES, NO, QUIT
+from Utils import createSourceFile, createResultFile, YES, NO, QUIT
 
 'Create temporary source code storage file'
-os.system("start "+createTempFile())
+FilenameSource = createSourceFile()
+FilenameResult= createResultFile()
+os.system("start "+FilenameSource)
 
-print("Please copy your code into the temporary sourceCode file")
+'Instruct the user to copy the code in there and close the file'
+print("Please copy your code into the temporary sourceCode file and save/close it")
 
 while 1:
     ready = raw_input("\n" + "Have you saved and closed the file? (y/n)")
     if ready.upper() == YES:
         print("Processing file ...")
-        sourceCode = open("sourceCode.txt", "r")
-        resultCode = open("resultCode.txt", "w")
+        sourceCode = open(FilenameSource, "r")
+        resultCode = open(FilenameResult, "w")
         for line in sourceCode:
             i = 0
             while line[i].isdigit():
@@ -26,6 +29,7 @@ while 1:
     
     else:
         if ready.upper() == QUIT:
+            os.remove(FilenameSource)
             exit()
         print(ready + " is not a valid input. Type in y or n to continue, q to quit.")
         
@@ -33,10 +37,10 @@ while 1:
 sourceCode.close()
 resultCode.close()
 
-cleanup = raw_input("\n" + "Do you want to remove the temporary files? (y/n)")
+cleanup = raw_input("\n" + "Do you want to remove the created files? (y/n)")
 
 if cleanup.upper() == "Y":
-    os.remove("sourceCode.txt")
-    os.remove("resultCode.txt")
+    os.remove(FilenameSource)
+    os.remove(FilenameResult)
 
     
